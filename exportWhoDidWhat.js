@@ -11,7 +11,7 @@ exports.whoDidWhat = async function(padId, revNum, callback)
   let exists = await padManager.doesPadExists(padId);
   if (!exists) {
     console.error("Pad does not exist");
-    process.exit(1);
+    callback("pad does not exist", null);
   }
 
   // get the pad
@@ -31,8 +31,7 @@ exports.whoDidWhat = async function(padId, revNum, callback)
   let authors = await pad.getAllAuthors();
   var authorsObj = {};
   var items = {};
-  var prevDate;
-  var threshold = 10; // CAKE TODO
+  var threshold = 1; // CAKE TODO
 
   for(var author in authors){
     let authr = await authorManager.getAuthor(authors[author]);
@@ -80,19 +79,9 @@ exports.whoDidWhat = async function(padId, revNum, callback)
         var keyword = "green"
       }
 
-      if(prevDate === humanDate){
-        var logString = "#" + revNum + 	" at " + humanTime + " " + authorName + " " + actionString;
-      }else{
-        if(per > threshold){
-          // console.log(humanDate);
-          var logString = "#" + revNum + 	" at " + humanTime + " " + authorName + " " + actionString;
-        }
-      }
-
       // By default we ignore any percentage that is lower than 1%
       if(per > threshold){
         // console.log(keyword, logString);
-        prevDate = humanDate;
         items[revNum] = {
           "timestamp": revision.meta.timestamp,
           "time": humanTime,

@@ -6,7 +6,6 @@ exports.expressCreateServer = function (hook_name, args, cb) {
     var revision = req.params.rev ? req.params.rev : null;
 
     exportWhoDidWhat.whoDidWhat(padID, revision, function(err, result) {
-//      res.attachment(padID+'.json');
       res.contentType('text/json');
       res.send(result);
     });
