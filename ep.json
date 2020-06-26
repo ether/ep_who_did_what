@@ -1,0 +1,20 @@
+{
+    "parts": [
+        {
+            "name": "ep_who_did_what",
+            "hooks": {
+                "eejsBlock_timesliderStyles": "ep_who_did_what/index",
+                "eejsBlock_timesliderScripts": "ep_who_did_what/index",
+                "eejsBlock_timesliderEditbarRight": "ep_who_did_what/index",
+                "eejsBlock_timesliderBody": "ep_who_did_what/index",
+                "clientVars": "ep_who_did_what/index",
+                "eejsBlock_mySettings": "ep_who_did_what/index",
+                "eejsBlock_body": "ep_who_did_what/index",
+                "eejsBlock_customStyles": "ep_who_did_what/index",
+                "expressCreateServer": "ep_who_did_what/express"
+            },
+            "client_hooks": {
+            }
+        }
+    ]
+}

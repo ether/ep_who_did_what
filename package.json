@@ -1,0 +1,8 @@
+{
+  "name": "ep_who_did_what",
+  "version": "0.0.1",
+  "description": "Who made what changes to a pad?  A historical report available in the timeslider",
+  "author": "John McLear <john@mclear.co.uk>",
+  "contributors": [],
+  "dependencies": {}
+}
