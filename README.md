@@ -1,3 +1,5 @@
+(https://user-images.githubusercontent.com/220864/85917969-ab5e3e80-b856-11ea-8263-4ca7c29fbde5.png)[https://user-images.githubusercontent.com/220864/85917969-ab5e3e80-b856-11ea-8263-4ca7c29fbde5.png]
+
 ## Who made what changes to a pad?
 
 And when?  This plugin aids to help authors that have been absent from a pad only to return and find that the content they contributed has been removed.  The author can see who removed content and also who added new content.
