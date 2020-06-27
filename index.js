@@ -55,13 +55,3 @@ exports.eejsBlock_mySettings = function (hook, context, callback)
   callback();
 };
 
-exports.eejsBlock_customStyles = function (hook_name, args, cb) {
-  args.content = args.content + eejs.require("ep_what_have_i_missed/templates/styles.html", {}, module);
-  return cb();
-};
-
-
-exports.eejsBlock_body = function (hook_name, args, cb) {
-  args.content = args.content + eejs.require("ep_what_have_i_missed/templates/diff.ejs", {}, module);
-  return cb();
-};

@@ -2,7 +2,9 @@
 
 And when?  This plugin aids to help authors that have been absent from a pad only to return and find that the content they contributed has been removed.  The author can see who removed content and also who added new content.
 
-To use the plugin visit the timeslider and click the Magnifying glass button.
+To use the plugin visit the timeslider and click the Magnifying glass button.  Find the offending revision and click on it to update the timeslider to watch that edit.
+
+Where did your content go?  Find out and chastise whoever removed it!  More importantly find out the pad contents before someone deleted it all and click the export button to Export the good state to a new pad.  Ideal for mitigating against trolls and people out to destroy pad contents.
 
 # Installing
 
@@ -26,5 +28,9 @@ git clone https://github.com/JohnMcLear/ep_who_did_what
 Please submit bug reports or patches at https://github.com/JohnMcLear/ep_who_did_what/issues
 
 # Todo
-
+- [ ] Use Locales file
 - [ ] Full test coverage
+- [ ] Test Mobile UX
+- [ ] Provide Granuality / Threshold support (currently a fixed value of 1% of total edits)
+- [ ] Author colors onto report (should be easy)
+- [ ] Rate limit requests

@@ -8,7 +8,6 @@ toggleWhoDidWhatReport = function(){
   } else {
     if(!hasRun){
       hasRun = true;
-      console.log("getting who did what report");
       var whoDidWhat = $('#whoDidWhatOutput').html("");
       $.getJSON("./export/whoDidWhat", function(data){
         var $sdiv = $('<ul />', { class: 'scrollable' }).appendTo(whoDidWhat);
@@ -21,28 +20,35 @@ toggleWhoDidWhatReport = function(){
             var keyword = "orange";
           }
           if(edit.opType === "-"){
-            var actionString = "removed some content("+edit.changeLength+" chars[" + edit.percent +"%]";
+            var actionString = "removed some content("+edit.changeLength+" chars[" + edit.percent +"%])";
             var keyword = "red";
           }
           if(edit.opType === "+"){
-            var actionString = "added some content("+edit.changeLength+" chars[" + edit.percent +"%]";
+            var actionString = "added some content("+edit.changeLength+" chars[" + edit.percent +"%])";
             var keyword = "green"
           }
           if(oldDate !== edit.date){
             var $date = $('<h2>').appendTo($sdiv);
             $date.text(edit.date);
           }
-          var $item = $('<a>').appendTo($sdiv);
+          var $item = $('<a class="whoDidWhatClickable">').appendTo($sdiv);
           $item.css("color", keyword);
           $item.css("display", "block");
           $item.text("#" + rev + " at " + edit.time + " " + edit.authorName + " " + actionString);
-          $item.attr("href", "#"+rev);
+          // it makes sense to update the UI to the revision BEFORE the applied revision
+          var newRev = parseInt(rev) -1;
+          $item.attr("href", "#"+newRev);
           oldDate = edit.date;
         });
       });
     }
     $('#whoDidWhat').addClass('popup-show');
   }
+  $('body').on('click', '.whoDidWhatClickable', function(){
+    var rev = $(this).attr("href").replace("#", "");
+    // console.log("We should update timetlisder to show rev ", rev);
+    BroadcastSlider.setSliderPosition(rev)
+  });
 }
 
 </script>
