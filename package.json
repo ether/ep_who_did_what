@@ -4,5 +4,9 @@
   "description": "Who made what changes to a pad?  A historical report available in the timeslider",
   "author": "John McLear <john@mclear.co.uk>",
   "contributors": [],
-  "dependencies": {}
+  "dependencies": {},
+  "funding": {
+    "type" : "individual",
+    "url" : "http://etherpad.org/donate"
+  }
 }
