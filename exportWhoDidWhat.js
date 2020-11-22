@@ -1,127 +1,123 @@
-var async = require("ep_etherpad-lite/node_modules/async");
-var Changeset = require("ep_etherpad-lite/static/js/Changeset");
-var padManager = require("ep_etherpad-lite/node/db/PadManager");
-var ERR = require("ep_etherpad-lite/node_modules/async-stacktrace");
-var Security = require('ep_etherpad-lite/static/js/security');
-var authorManager = require('ep_etherpad-lite/node/db/AuthorManager')
-var Pad = require('ep_etherpad-lite/node/db/Pad')
+const async = require('ep_etherpad-lite/node_modules/async');
+const Changeset = require('ep_etherpad-lite/static/js/Changeset');
+const padManager = require('ep_etherpad-lite/node/db/PadManager');
+const ERR = require('ep_etherpad-lite/node_modules/async-stacktrace');
+const Security = require('ep_etherpad-lite/static/js/security');
+const authorManager = require('ep_etherpad-lite/node/db/AuthorManager');
+const Pad = require('ep_etherpad-lite/node/db/Pad');
 
-exports.whoDidWhat = async function(padId, revNum, callback)
-{
-  let exists = await padManager.doesPadExists(padId);
+exports.whoDidWhat = async function (padId, revNum, callback) {
+  const exists = await padManager.doesPadExists(padId);
   if (!exists) {
-    console.error("Pad does not exist");
-    callback("pad does not exist", null);
+    console.error('Pad does not exist');
+    callback('pad does not exist', null);
   }
 
   // get the pad
-  let pad = await padManager.getPad(padId);
-  var head = pad.getHeadRevisionNumber();
+  const pad = await padManager.getPad(padId);
+  const head = pad.getHeadRevisionNumber();
 
-  //create an array with all revisions
-  var revisions = [];
-  var beginningTime;
-  var endTime;
+  // create an array with all revisions
+  const revisions = [];
+  let beginningTime;
+  let endTime;
 
-  for(var i=0;i<=head;i++)
-  {
+  for (let i = 0; i <= head; i++) {
     revisions.push(i);
   }
 
-  let authors = await pad.getAllAuthors();
-  var authorsObj = {};
-  var items = {};
-  var threshold = 1; // CAKE TODO
+  const authors = await pad.getAllAuthors();
+  const authorsObj = {};
+  const items = {};
+  const threshold = 1; // CAKE TODO
 
-  for(var author in authors){
-    let authr = await authorManager.getAuthor(authors[author]);
+  for (const author in authors) {
+    const authr = await authorManager.getAuthor(authors[author]);
     let color = await authorManager.getAuthorColorId(authors[author]);
-    let authorName = await authorManager.getAuthorName(authors[author]);
+    const authorName = await authorManager.getAuthorName(authors[author]);
     authorsObj[authors[author]] = {};
     authorsObj[authors[author]].name = authorName;
 
-    if(typeof color === "string" && color.indexOf("#") !== -1){
+    if (typeof color === 'string' && color.indexOf('#') !== -1) {
       authorsObj[authors[author]].color = color;
-    }else{
+    } else {
       // color needs to come from index
-      let palette = authorManager.getColorPalette();
+      const palette = authorManager.getColorPalette();
       color = palette[color];
       authorsObj[authors[author]].color = color;
     }
   }
 
-  //run trough all revisions
-  async.forEachSeries(revisions, async function(revNum, callback){
+  // run trough all revisions
+  async.forEachSeries(revisions, async (revNum, callback) => {
+    const revision = await pad.getRevision(revNum);
 
-    let revision = await pad.getRevision(revNum);
+    if (authorsObj[revision.meta.author]) {
+      const authorColor = authorsObj[revision.meta.author].color.toUpperCase();
+      let authorName = authorsObj[revision.meta.author].name;
+      if (!authorName) authorName = 'Anonymous';
+      const opType = typeOfOp(revision.changeset);
+      const unpacked = Changeset.unpack(revision.changeset);
+      const changeLength = Math.abs(unpacked.oldLen - unpacked.newLen);
+      const per = Math.round((100 / unpacked.oldLen) * changeLength);
+      const humanTime = new Date(revision.meta.timestamp).toLocaleTimeString();
+      const humanDate = new Date(revision.meta.timestamp).toDateString();
 
-    if(authorsObj[revision.meta.author]){
-      var authorColor = authorsObj[revision.meta.author].color.toUpperCase();
-      var authorName = authorsObj[revision.meta.author].name;
-      if(!authorName) authorName = "Anonymous"
-      var opType = typeOfOp(revision.changeset);
-      var unpacked = Changeset.unpack(revision.changeset);
-      var changeLength = Math.abs(unpacked.oldLen - unpacked.newLen);
-      var per = Math.round(( 100 / unpacked.oldLen) * changeLength);
-      var humanTime = new Date(revision.meta.timestamp).toLocaleTimeString();
-      var humanDate = new Date(revision.meta.timestamp).toDateString();
-
-      if(opType === "="){
-        var actionString = "changed some attributes"
-        var keyword = "orange";
+      if (opType === '=') {
+        var actionString = 'changed some attributes';
+        var keyword = 'orange';
       }
-      if(opType === "-"){
-        var actionString = "removed some content("+changeLength+" chars[" + per +"%]";
-        var keyword = "red";
+      if (opType === '-') {
+        var actionString = `removed some content(${changeLength} chars[${per}%]`;
+        var keyword = 'red';
       }
-      if(opType === "+"){
-        var actionString = "added some content("+changeLength+" chars[" + per +"%]";
-        var keyword = "green"
+      if (opType === '+') {
+        var actionString = `added some content(${changeLength} chars[${per}%]`;
+        var keyword = 'green';
       }
 
       // By default we ignore any percentage that is lower than 1%
-      if(per > threshold){
+      if (per > threshold) {
         // console.log(keyword, logString);
         items[revNum] = {
-          "timestamp": revision.meta.timestamp,
-          "time": humanTime,
-          "date": humanDate,
-          "authorName": authorName,
-          "opType": opType,
-          "changeLength": changeLength,
-          "percent": per
-        }
+          timestamp: revision.meta.timestamp,
+          time: humanTime,
+          date: humanDate,
+          authorName,
+          opType,
+          changeLength,
+          percent: per,
+        };
       }
-
     }
 
     // setImmediate required else it will crash on large pads
     // See https://caolan.github.io/async/v3/ Common Pitfalls
-    async.setImmediate(function() {
-      callback()
+    async.setImmediate(() => {
+      callback();
     });
-  }, function(){
+  }, () => {
     callback(null, items);
   });
 };
 
 // returns "-", "+" or "=" depending on the type of edit
-function typeOfOp(changeset){
-  var unpacked = Changeset.unpack(changeset);
-  var iter = Changeset.opIterator(unpacked.ops);
+function typeOfOp(changeset) {
+  const unpacked = Changeset.unpack(changeset);
+  const iter = Changeset.opIterator(unpacked.ops);
   while (iter.hasNext()) {
-    var o = iter.next();
+    const o = iter.next();
     var code;
     switch (o.opcode) {
-    case '=':
-      code = "="
-      break;
-    case '-':
-      code = "-"
-      break;
-    case '+':
+      case '=':
+        code = '=';
+        break;
+      case '-':
+        code = '-';
+        break;
+      case '+':
       {
-        code = "+"
+        code = '+';
         break;
       }
     }
@@ -129,5 +125,3 @@ function typeOfOp(changeset){
 
   return code;
 }
-
-
