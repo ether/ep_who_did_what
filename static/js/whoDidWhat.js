@@ -46,8 +46,8 @@ toggleWhoDidWhatReport = function(){
   }
   $('body').on('click', '.whoDidWhatClickable', function(){
     var rev = $(this).attr("href").replace("#", "");
-    // console.log("We should update timetlisder to show rev ", rev);
-    BroadcastSlider.setSliderPosition(rev)
+    window.location.hash = `#${rev}`;
+    location.reload(); // temp fix until I can fix interacting with timeslider..
   });
 }
 
