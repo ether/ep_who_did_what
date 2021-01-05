@@ -6,7 +6,7 @@ const Security = require('ep_etherpad-lite/static/js/security');
 const authorManager = require('ep_etherpad-lite/node/db/AuthorManager');
 const Pad = require('ep_etherpad-lite/node/db/Pad');
 
-exports.whoDidWhat = async function (padId, revNum, callback) {
+exports.whoDidWhat = async function (padId, revNum, cb) {
   const exists = await padManager.doesPadExists(padId);
   if (!exists) {
     console.error('Pad does not exist');
@@ -93,11 +93,13 @@ exports.whoDidWhat = async function (padId, revNum, callback) {
 
     // setImmediate required else it will crash on large pads
     // See https://caolan.github.io/async/v3/ Common Pitfalls
+    /*
     async.setImmediate(() => {
       callback();
     });
+    */
   }, () => {
-    callback(null, items);
+    cb(null, items);
   });
 };
 
