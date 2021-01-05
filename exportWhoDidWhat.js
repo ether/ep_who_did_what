@@ -4,9 +4,8 @@ const padManager = require('ep_etherpad-lite/node/db/PadManager');
 const ERR = require('ep_etherpad-lite/node_modules/async-stacktrace');
 const Security = require('ep_etherpad-lite/static/js/security');
 const authorManager = require('ep_etherpad-lite/node/db/AuthorManager');
-const Pad = require('ep_etherpad-lite/node/db/Pad');
 
-exports.whoDidWhat = async function (padId, revNum, cb) {
+exports.whoDidWhat = async (padId, revNum, cb) => {
   const exists = await padManager.doesPadExists(padId);
   if (!exists) {
     console.error('Pad does not exist');
