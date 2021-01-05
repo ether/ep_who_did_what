@@ -26,21 +26,22 @@ exports.eejsBlock_timesliderStyles = function (fn, args, cb) {
 exports.eejsBlock_timesliderScripts = function (fn, args, cb) {
   args.content += eejs.require('ep_who_did_what/static/js/whoDidWhat.js');
   // "<script type='text/javascript' src='../../static/plugins/ep_who_did_what/static/js/whoDidWhat.js'></script>";
-  return cb();
+  cb();
 };
 
 exports.eejsBlock_timesliderEditbarRight = function (fn, args, cb) {
   args.content += eejs.require('ep_who_did_what/templates/button.ejs', {}, module);
-  return cb();
+  cb();
 };
 
 exports.eejsBlock_timesliderBody = function (fn, args, cb) {
   args.content += eejs.require('ep_who_did_what/templates/modal.ejs', {}, module);
+  cb();
 };
 
 exports.clientVars = function (hook, context, callback) {
   if (!settings.ep_what_have_i_missed) settings.ep_what_have_i_missed = {};
-  return callback({
+  callback({
     ep_what_have_i_missed: {
     },
   });
