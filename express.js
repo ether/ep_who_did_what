@@ -10,4 +10,5 @@ exports.expressCreateServer = function (hook_name, args, cb) {
       res.send(result);
     });
   });
+  cb();
 };
