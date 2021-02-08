@@ -1,3 +1,5 @@
+![Publish Status](https://github.com/ether/ep_who_did_what/workflows/Node.js%20Package/badge.svg) ![Backend Tests Status](https://github.com/ether/ep_who_did_what/workflows/Backend%20tests/badge.svg)
+
 ![https://user-images.githubusercontent.com/220864/85917969-ab5e3e80-b856-11ea-8263-4ca7c29fbde5.png](https://user-images.githubusercontent.com/220864/85917969-ab5e3e80-b856-11ea-8263-4ca7c29fbde5.png)
 
 ## Who made what changes to a pad?
