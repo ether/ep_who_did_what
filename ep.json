@@ -3,7 +3,6 @@
         {
             "name": "ep_who_did_what",
             "hooks": {
-                "eejsBlock_timesliderStyles": "ep_who_did_what/index",
                 "eejsBlock_timesliderScripts": "ep_who_did_what/index",
                 "eejsBlock_timesliderEditbarRight": "ep_who_did_what/index",
                 "eejsBlock_timesliderBody": "ep_who_did_what/index",

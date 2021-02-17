@@ -1,3 +1,5 @@
+'use strict';
+
 /**
  * Copyright 2020 John McLear <john@mclear.co.uk>
  *
@@ -13,33 +15,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const log4js = require('ep_etherpad-lite/node_modules/log4js');
-const statsLogger = log4js.getLogger('stats');
 const eejs = require('ep_etherpad-lite/node/eejs/');
 const settings = require('ep_etherpad-lite/node/utils/Settings');
-const stats = require('ep_etherpad-lite/node/stats');
 
-exports.eejsBlock_timesliderStyles = function (fn, args, cb) {
-  return cb();
-};
-
-exports.eejsBlock_timesliderScripts = function (fn, args, cb) {
-  args.content += eejs.require('ep_who_did_what/static/js/whoDidWhat.js');
-  // "<script type='text/javascript' src='../../static/plugins/ep_who_did_what/static/js/whoDidWhat.js'></script>";
+exports.eejsBlock_timesliderScripts = (fn, args, cb) => {
+  args.content += `<script type="text/javascript" src="${eejs.require(
+      'ep_who_did_what/static/js/whoDidWhat.js')}></script>`;
   cb();
 };
 
-exports.eejsBlock_timesliderEditbarRight = function (fn, args, cb) {
+exports.eejsBlock_timesliderEditbarRight = (fn, args, cb) => {
   args.content += eejs.require('ep_who_did_what/templates/button.ejs', {}, module);
   cb();
 };
 
-exports.eejsBlock_timesliderBody = function (fn, args, cb) {
+exports.eejsBlock_timesliderBody = (fn, args, cb) => {
   args.content += eejs.require('ep_who_did_what/templates/modal.ejs', {}, module);
   cb();
 };
 
-exports.clientVars = function (hook, context, callback) {
+exports.clientVars = (hook, context, callback) => {
   if (!settings.ep_what_have_i_missed) settings.ep_what_have_i_missed = {};
   callback({
     ep_what_have_i_missed: {
@@ -47,7 +42,7 @@ exports.clientVars = function (hook, context, callback) {
   });
 };
 
-exports.eejsBlock_mySettings = function (hook, context, callback) {
+exports.eejsBlock_mySettings = (hook, context, callback) => {
   if (!settings.ep_what_have_i_missed) settings.ep_what_have_i_missed = {};
   context.content += eejs.require('ep_what_have_i_missed/templates/settings.ejs', {
   });

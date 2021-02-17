@@ -1,15 +1,15 @@
+'use strict';
+
 const async = require('ep_etherpad-lite/node_modules/async');
 const Changeset = require('ep_etherpad-lite/static/js/Changeset');
 const padManager = require('ep_etherpad-lite/node/db/PadManager');
-const ERR = require('ep_etherpad-lite/node_modules/async-stacktrace');
-const Security = require('ep_etherpad-lite/static/js/security');
 const authorManager = require('ep_etherpad-lite/node/db/AuthorManager');
 
 exports.whoDidWhat = async (padId, revNum, cb) => {
   const exists = await padManager.doesPadExists(padId);
   if (!exists) {
     console.error('Pad does not exist');
-    callback('pad does not exist', null);
+    cb('pad does not exist', null);
   }
 
   // get the pad
@@ -18,8 +18,6 @@ exports.whoDidWhat = async (padId, revNum, cb) => {
 
   // create an array with all revisions
   const revisions = [];
-  let beginningTime;
-  let endTime;
 
   for (let i = 0; i <= head; i++) {
     revisions.push(i);
@@ -30,8 +28,7 @@ exports.whoDidWhat = async (padId, revNum, cb) => {
   const items = {};
   const threshold = 1; // CAKE TODO
 
-  for (const author in authors) {
-    const authr = await authorManager.getAuthor(authors[author]);
+  for (const author of Object.keys(authors)) {
     let color = await authorManager.getAuthorColorId(authors[author]);
     const authorName = await authorManager.getAuthorName(authors[author]);
     authorsObj[authors[author]] = {};
@@ -52,7 +49,6 @@ exports.whoDidWhat = async (padId, revNum, cb) => {
     const revision = await pad.getRevision(revNum);
 
     if (authorsObj[revision.meta.author]) {
-      const authorColor = authorsObj[revision.meta.author].color.toUpperCase();
       let authorName = authorsObj[revision.meta.author].name;
       if (!authorName) authorName = 'Anonymous';
       const opType = typeOfOp(revision.changeset);
@@ -61,19 +57,6 @@ exports.whoDidWhat = async (padId, revNum, cb) => {
       const per = Math.round((100 / unpacked.oldLen) * changeLength);
       const humanTime = new Date(revision.meta.timestamp).toLocaleTimeString();
       const humanDate = new Date(revision.meta.timestamp).toDateString();
-
-      if (opType === '=') {
-        var actionString = 'changed some attributes';
-        var keyword = 'orange';
-      }
-      if (opType === '-') {
-        var actionString = `removed some content(${changeLength} chars[${per}%]`;
-        var keyword = 'red';
-      }
-      if (opType === '+') {
-        var actionString = `added some content(${changeLength} chars[${per}%]`;
-        var keyword = 'green';
-      }
 
       // By default we ignore any percentage that is lower than 1%
       if (per > threshold) {
@@ -103,12 +86,12 @@ exports.whoDidWhat = async (padId, revNum, cb) => {
 };
 
 // returns "-", "+" or "=" depending on the type of edit
-function typeOfOp(changeset) {
+const typeOfOp = (changeset) => {
   const unpacked = Changeset.unpack(changeset);
   const iter = Changeset.opIterator(unpacked.ops);
+  let code;
   while (iter.hasNext()) {
     const o = iter.next();
-    var code;
     switch (o.opcode) {
       case '=':
         code = '=';
@@ -125,4 +108,4 @@ function typeOfOp(changeset) {
   }
 
   return code;
-}
+};
