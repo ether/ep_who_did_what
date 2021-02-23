@@ -19,8 +19,8 @@ const eejs = require('ep_etherpad-lite/node/eejs/');
 const settings = require('ep_etherpad-lite/node/utils/Settings');
 
 exports.eejsBlock_timesliderScripts = (fn, args, cb) => {
-  args.content += `<script type="text/javascript" src="${eejs.require(
-      'ep_who_did_what/static/js/whoDidWhat.js')}></script>`;
+  args.content += `<script type='text/javascript'>${eejs.require(
+      'ep_who_did_what/static/js/whoDidWhat.js')}</script>`;
   cb();
 };
 
