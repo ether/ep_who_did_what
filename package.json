@@ -32,5 +32,9 @@
   },
   "peerDependencies": {
     "ep_etherpad-lite": ">=1.8.6"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ether/ep_who_did_what.git"
   }
 }
