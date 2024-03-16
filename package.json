@@ -1,6 +1,6 @@
 {
   "name": "ep_who_did_what",
-  "version": "0.0.62",
+  "version": "0.0.63",
   "description": "Who made what changes to a pad?  A historical report available in the timeslider",
   "author": "John McLear <john@mclear.co.uk>",
   "contributors": [],
@@ -10,19 +10,16 @@
     "url": "https://etherpad.org/"
   },
   "devDependencies": {
-    "eslint": "^8.51.0",
-    "eslint-config-etherpad": "^3.0.22",
-    "typescript": "^4.9.5"
+    "eslint": "^8.57.0",
+    "eslint-config-etherpad": "^4.0.4",
+    "typescript": "^5.4.2"
   },
   "scripts": {
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },
   "engines": {
-    "node": ">=12.17.0"
-  },
-  "peerDependencies": {
-    "ep_etherpad-lite": ">=1.8.6"
+    "node": ">=18.0.0"
   },
   "repository": {
     "type": "git",
