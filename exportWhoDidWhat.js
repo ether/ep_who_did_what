@@ -10,6 +10,7 @@ exports.whoDidWhat = async (padId, revNum, cb) => {
   if (!exists) {
     console.error('Pad does not exist');
     cb('pad does not exist', null);
+    return;
   }
 
   // get the pad
