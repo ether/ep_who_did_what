@@ -1,6 +1,8 @@
 {
 	"@metadata": {
-		"authors": []
+		"authors": [
+			"McDutchie"
+		]
 	},
-	"pad.ep_who_did_what_catchup.title": "Wie heeft er wanneer welke wijzigingen aangebracht?"
+	"pad.ep_who_did_what_catchup.title": "Wie heeft er wanneer welke wijzigingen aangebracht aan deze notitie?"
 }
