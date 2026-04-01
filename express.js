@@ -3,7 +3,7 @@
 const exportWhoDidWhat = require('./exportWhoDidWhat');
 
 exports.expressCreateServer = (hookName, args, cb) => {
-  args.app.get('/p/:pad/:rev?/export/whoDidWhat', (req, res, next) => {
+  args.app.get('/p/:pad{/:rev}/export/whoDidWhat', (req, res, next) => {
     const padID = req.params.pad;
     const revision = req.params.rev ? req.params.rev : null;
 
