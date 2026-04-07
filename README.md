@@ -18,7 +18,7 @@ Use the ``/admin`` interface, search for ``ep_who_did_what`` and click Install
 
 Option 2.
 ```
-npm install ep_who_did_what
+pnpm run plugins install ep_who_did_what
 ```
 
 Option 3.
