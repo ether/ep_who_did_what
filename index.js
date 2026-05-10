@@ -1,5 +1,7 @@
 'use strict';
 
+const {template} = require('ep_plugin_helpers');
+
 /**
  * Copyright 2020 John McLear <john@mclear.co.uk>
  *
@@ -24,15 +26,11 @@ exports.eejsBlock_timesliderScripts = (fn, args, cb) => {
   cb();
 };
 
-exports.eejsBlock_timesliderEditbarRight = (fn, args, cb) => {
-  args.content += eejs.require('ep_who_did_what/templates/button.ejs', {}, module);
-  cb();
-};
+exports.eejsBlock_timesliderEditbarRight =
+    template('ep_who_did_what/templates/button.ejs');
 
-exports.eejsBlock_timesliderBody = (fn, args, cb) => {
-  args.content += eejs.require('ep_who_did_what/templates/modal.ejs', {}, module);
-  cb();
-};
+exports.eejsBlock_timesliderBody =
+    template('ep_who_did_what/templates/modal.ejs');
 
 exports.clientVars = (hook, context, callback) => {
   if (!settings.ep_what_have_i_missed) settings.ep_what_have_i_missed = {};

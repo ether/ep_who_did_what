@@ -23,5 +23,8 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/ether/ep_who_did_what.git"
+  },
+  "dependencies": {
+    "ep_plugin_helpers": "^0.5.0"
   }
 }
