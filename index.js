@@ -17,7 +17,7 @@ const {template} = require('ep_plugin_helpers');
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-const eejs = require('ep_etherpad-lite/node/eejs/');
+const eejs = require('ep_etherpad-lite/node/eejs');
 const settings = require('ep_etherpad-lite/node/utils/Settings');
 
 exports.eejsBlock_timesliderScripts = (fn, args, cb) => {

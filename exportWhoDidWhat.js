@@ -1,6 +1,6 @@
 'use strict';
 
-const async = require('ep_etherpad-lite/node_modules/async');
+const async = require('async');
 const Changeset = require('ep_etherpad-lite/static/js/Changeset');
 const padManager = require('ep_etherpad-lite/node/db/PadManager');
 const authorManager = require('ep_etherpad-lite/node/db/AuthorManager');
