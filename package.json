@@ -25,7 +25,7 @@
     "url": "https://github.com/ether/ep_who_did_what.git"
   },
   "dependencies": {
-    "ep_plugin_helpers": "^0.6.2",
+    "ep_plugin_helpers": "^0.6.7",
     "async": "^3.2.6"
   }
 }
