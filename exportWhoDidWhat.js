@@ -5,6 +5,15 @@ const Changeset = require('ep_etherpad-lite/static/js/Changeset');
 const padManager = require('ep_etherpad-lite/node/db/PadManager');
 const authorManager = require('ep_etherpad-lite/node/db/AuthorManager');
 
+// Etherpad attributes revisions to this reserved id when no real author made
+// them: the default pad content written on pad creation, HTTP API
+// setText/appendText/setHTML calls without an authorId, server-side imports.
+// It has no author record, so those revisions used to fall through to
+// "Anonymous" — indistinguishable from a real user who never set a name.
+// See ether/etherpad#8044.
+const SYSTEM_AUTHOR_ID = 'a.etherpad-system';
+const SYSTEM_AUTHOR_LABEL = 'Etherpad';
+
 // Returns the volume of a changeset — i.e. how many characters were inserted
 // plus how many were deleted. The previous implementation used the difference
 // between oldLen and newLen, which incorrectly reported zero when a user
@@ -68,7 +77,8 @@ exports.whoDidWhat = async (padId, revNum, cb) => {
     let color = await authorManager.getAuthorColorId(authors[author]);
     const authorName = await authorManager.getAuthorName(authors[author]);
     authorsObj[authors[author]] = {};
-    authorsObj[authors[author]].name = authorName;
+    authorsObj[authors[author]].name =
+        authors[author] === SYSTEM_AUTHOR_ID ? SYSTEM_AUTHOR_LABEL : authorName;
 
     if (typeof color === 'string' && color.indexOf('#') !== -1) {
       authorsObj[authors[author]].color = color;
