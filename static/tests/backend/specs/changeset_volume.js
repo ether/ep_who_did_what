@@ -10,12 +10,12 @@ const buildChangeset = (oldText, newText) => Changeset.makeSplice(
 
 describe(__filename, function () {
   describe('changesetVolume()', function () {
-    it('counts a pure insert', function () {
+    it('counts a pure insert', async function () {
       const cs = buildChangeset('', 'hello world');
       assert.equal(exporter.changesetVolume(cs), 11);
     });
 
-    it('counts a pure delete', function () {
+    it('counts a pure delete', async function () {
       const cs = buildChangeset('hello world', '');
       assert.equal(exporter.changesetVolume(cs), 11);
     });
@@ -23,7 +23,7 @@ describe(__filename, function () {
     // Regression for #89: same length REPLACE used to report volume 0
     // because the old impl was `Math.abs(oldLen - newLen)`, which lost
     // every contributor whose edits were corrections rather than appends.
-    it('counts a same-length replace (regression for #89)', function () {
+    it('counts a same-length replace (regression for #89)', async function () {
       const cs = buildChangeset('hello world', 'world hello');
       // 11 chars deleted + 11 inserted (the diff is a full swap).
       // Old impl returned 0; we just need this to be > 0.
@@ -31,7 +31,7 @@ describe(__filename, function () {
           'same-length replace must report non-zero volume');
     });
 
-    it('counts a partial replace shorter than original', function () {
+    it('counts a partial replace shorter than original', async function () {
       const cs = buildChangeset('hello world', 'hi');
       // 11 deleted, 2 inserted = 13. Old impl reported abs(11-2)=9.
       assert.equal(exporter.changesetVolume(cs), 13);
@@ -39,10 +39,11 @@ describe(__filename, function () {
   });
 
   describe('typeOfOp()', function () {
-    it('returns + for an insert', function () {
+    it('returns + for an insert', async function () {
       assert.equal(exporter.typeOfOp(buildChangeset('', 'hello')), '+');
     });
-    it('returns - for a delete', function () {
+
+    it('returns - for a delete', async function () {
       assert.equal(exporter.typeOfOp(buildChangeset('hello', '')), '-');
     });
   });
