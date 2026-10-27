@@ -14,3 +14,17 @@ exports.expressCreateServer = (hookName, args, cb) => {
   });
   cb();
 };
+
+exports.expressCreateServer = (hookName, args, cb) => {
+  args.app.get('/whoDidWhat/:pad', (req, res, next) => {
+    const padID = req.params.pad;
+
+    exportWhoDidWhat.whoDidWhat(padID, null, (err, result) => {
+      res.contentType('text/json');
+      res.json(result);
+    });
+  });
+  cb();
+};
+
+
